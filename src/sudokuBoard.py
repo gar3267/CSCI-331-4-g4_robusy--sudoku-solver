@@ -17,18 +17,24 @@ class Board():
 
         :param stream: stream to get input from
         """
+        # Getting file contents
+        streamInput:str = stream.read()
+        streamLines:list[str] = streamInput.split('\n')
 
         # Reading Lexicon
-        lexiconInput:str = stream.read()
+        lexiconInput:str = streamLines[0]
         self.lexicon = lexiconInput.split(',')
         lexiconLength:int = len(self.lexicon)
 
         # Creating board
+        self.board = [[]]*lexiconLength
         for i in range(lexiconLength):
-            boardInput:str = stream.read()
+            boardInput:str = streamLines[i+1]
             self.board[i] = list(boardInput)
     
 
     def __str__(self):
-        print(self.lexicon)
-        print(self.board)
+        result:str = 'Lexicon:\n'+str(self.lexicon)+'\n\nBoard:'
+        for row in self.board:
+            result += '\n'+str(row)
+        return result
