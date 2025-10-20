@@ -1,15 +1,12 @@
 from .sudokuBoard import Board
 
-def main():
-    # userBoard:Board
-    # userBoard = Board()
-    # print(userBoard)
-    # print(userBoard.validate())
+def testBoard():
+    board0:Board = Board(lexicon=['a','b','c'],board=[[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']])
+    print(board0)
+    print(board0.validate())
 
-    print("doing board 1")
     board1:Board
     with open('src/sudoku_boards/board1.txt','r') as file:
-        print(file)
         board1 = Board(file=file)
     print(board1)
     print(board1.validate())
@@ -38,3 +35,9 @@ def main():
         squareValid = Board(file=file)
     print('\n'+str(squareValid))
     print(squareValid.validate())
+
+    # Testing user input
+    userBoard:Board
+    userBoard = Board()
+    print(userBoard)
+    print(userBoard.validate())
