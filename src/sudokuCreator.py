@@ -1,6 +1,11 @@
 from .sudokuBoard import Board
 
 def main():
+    userBoard:Board
+    userBoard = Board()
+    print(userBoard)
+    print(userBoard.validate())
+
     board1:Board
     with open('src/sudoku_boards/board1.txt','r') as file:
         board1 = Board(file)

@@ -34,6 +34,68 @@ class Board():
             self.board[i] = list(boardInput)
     
 
+    def __init__(self):
+        """No parameters so ask for terminal user input"""
+        # Getting Lexicon
+        theUserStupid:bool = True
+        lexiconInput:list
+        while theUserStupid:
+            lexiconInput = input("Enter the lexicon (ex: 'a,1,2,b,c,d,D'):\n").split(',')
+            
+            # Checking if each character is a character and none are spaces
+            theUserIsVeryStupid:bool = False
+            for entry in lexiconInput:
+                if len(entry) != 1:
+                    print("Lexicon can only consist of entries of length 1: "+entry)
+                    theUserIsVeryStupid = True
+                    break
+                if entry == ' ':
+                    print("Spaces cannot be part of the lexicon, please try again.")
+                    theUserIsVeryStupid = True
+                    break
+            if theUserIsVeryStupid:
+                continue
+
+            # Checking size of lexicon is a squareroot
+            lexLengthSqrt = math.sqrt(len(lexiconInput))
+            if float(int(lexLengthSqrt)) != lexLengthSqrt:
+                print("Lexicon length is not a perfect square, please try again.")
+                continue
+            theUserStupid = False
+        self.lexicon = lexiconInput
+        self.lexiconLength = len(self.lexicon)
+
+        # Creating board
+        self.board = [[]]*self.lexiconLength
+        lexiconDomain:list[str] = self.lexicon + [' ']
+        for i in range(self.lexiconLength):
+            theUserStupid = True
+            boardInput:list
+
+            # Getting input
+            while theUserStupid:
+                boardInput = list(input("Enter the next row (ex: 'a b '):\n"))
+
+                # Checking for row length
+                if len(boardInput) != self.lexiconLength:
+                    print("Row isn't equal to the size of the row length: "+str(self.lexiconLength))
+                    continue
+
+                # Checking if within lexicon
+                theUserIsVeryStupid:bool = False
+                for entry in boardInput:
+                    if entry not in lexiconDomain:
+                        print("You used a value outside of the lexicon: "+entry)
+                        theUserIsVeryStupid = True
+                if theUserIsVeryStupid:
+                    continue
+
+                # We got good input so leave
+                theUserStupid = False
+            
+            self.board[i] = boardInput
+    
+
     def validate(self):
         """
         Validates if the board is a solution
