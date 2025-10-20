@@ -6,13 +6,22 @@ class Board():
     lexiconLength:int
 
 
-    def __init__(self, board:list[list[str]], lexicon:list[str]):
+    def __init__(self, file=None, board=None, lexicon=None):
+        if board != None and lexicon != None:
+            self._initVariables(board,lexicon)
+        elif file != None:
+            self._initFile(file)
+        else:
+            self._initUserInput()
+
+
+    def _initVariables(self, board:list[list[str]], lexicon:list[str]):
         """Basic initialization with directly passing in board and lexicon vairables"""
         self.board = board
         self.lexicon = lexicon
 
 
-    def __init__(self, file:io.TextIOWrapper):
+    def _initFile(self, file:io.TextIOWrapper):
         """
         Uses file to generate lexicon and board
 
@@ -34,14 +43,14 @@ class Board():
             self.board[i] = list(boardInput)
     
 
-    def __init__(self):
+    def _initUserInput(self):
         """No parameters so ask for terminal user input"""
         # Getting Lexicon
         theUserStupid:bool = True
         lexiconInput:list
         while theUserStupid:
             lexiconInput = input("Enter the lexicon (ex: 'a,1,2,b,c,d,D'):\n").split(',')
-            
+
             # Checking if each character is a character and none are spaces
             theUserIsVeryStupid:bool = False
             for entry in lexiconInput:
