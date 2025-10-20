@@ -1,4 +1,5 @@
 from .sudokuBoard import Board
+import os
 
 def testBoard():
     board0:Board = Board(lexicon=['a','b','c'],board=[[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']])
@@ -37,7 +38,26 @@ def testBoard():
     print(squareValid.validate())
 
     # Testing user input
-    userBoard:Board
-    userBoard = Board()
+    userBoard:Board = Board()
     print(userBoard)
     print(userBoard.validate())
+
+
+def getUserBoard():
+    """Uses board's init to get a board from user input"""
+    return Board()
+
+
+def getBoardFromFolder():
+    """Gets all the boards in sudoku_boards folder then returns them as list"""
+    dir_list = os.listdir('src/sudoku_boards')
+    result:list[Board] = []
+
+    # If it blows up tells you that you did the file wrong
+    for filename in dir_list:
+        fileBoard:Board
+        with open('src/sudoku_boards/'+filename,'r') as file:
+            fileBoard = Board(file=file)
+            result.append(fileBoard)
+    
+    return result

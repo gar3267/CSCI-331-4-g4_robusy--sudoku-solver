@@ -1,7 +1,7 @@
-import src.sudokuCreator as sudokuCreator
+import sudokuRunner as sudokuRunner
 
 def main():
-    sudokuCreator.testBoard()
+    sudokuRunner.testBoard()
 
 if __name__ == '__main__':
     main()
