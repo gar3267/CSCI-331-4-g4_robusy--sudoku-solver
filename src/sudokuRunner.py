@@ -1,46 +1,47 @@
 from .sudokuBoard import Board
 import os
 
-def testBoard():
+def testBoard(withUser=False):
     board0:Board = Board(lexicon=['a','b','c'],board=[[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']])
     print(board0)
     print(board0.validate())
 
     board1:Board
-    with open('src/sudoku_boards/board1.txt','r') as file:
+    with open('src/sudoku_boards/board1.sud','r') as file:
         board1 = Board(file=file)
     print(board1)
     print(board1.validate())
     
     answer1:Board
-    with open('src/sudoku_boards/answers/answer1.txt','r') as file:
+    with open('src/sudoku_boards/answers/answer1.sud','r') as file:
         answer1 = Board(file=file)
     print('\n'+str(answer1))
     print(answer1.validate())
     
     # Testing validity
     rowValid:Board
-    with open('src/sudoku_boards/badBoards/rowValidFail.txt','r') as file:
+    with open('src/sudoku_boards/bad_boards/rowValidFail.sud','r') as file:
         rowValid = Board(file=file)
     print('\n'+str(rowValid))
     print(rowValid.validate())
 
     colValid:Board
-    with open('src/sudoku_boards/badBoards/colValidFail.txt','r') as file:
+    with open('src/sudoku_boards/bad_boards/colValidFail.sud','r') as file:
         colValid = Board(file=file)
     print('\n'+str(colValid))
     print(colValid.validate())
 
     squareValid:Board
-    with open('src/sudoku_boards/badBoards/squareValidFail.txt','r') as file:
+    with open('src/sudoku_boards/bad_boards/squareValidFail.sud','r') as file:
         squareValid = Board(file=file)
     print('\n'+str(squareValid))
     print(squareValid.validate())
 
     # Testing user input
-    userBoard:Board = Board()
-    print(userBoard)
-    print(userBoard.validate())
+    if withUser:
+        userBoard:Board = Board()
+        print(userBoard)
+        print(userBoard.validate())
 
 
 def getUserBoard():
@@ -48,16 +49,17 @@ def getUserBoard():
     return Board()
 
 
-def getBoardFromFolder():
-    """Gets all the boards in sudoku_boards folder then returns them as list"""
-    dir_list = os.listdir('src/sudoku_boards')
+def getBoardsFromFolder(path:str = 'src/sudoku_boards'):
+    """Gets all the boards pathin sudoku_boards folder then returns them as list"""
+    dir_list = os.listdir(path)
     result:list[Board] = []
 
-    # If it blows up tells you that you did the file wrong
+    # If it blows up, that tells you that you did the file wrong
     for filename in dir_list:
         fileBoard:Board
-        with open('src/sudoku_boards/'+filename,'r') as file:
-            fileBoard = Board(file=file)
-            result.append(fileBoard)
+        if filename[-4:] == '.sud':
+            with open(path+'/'+filename,'r') as file:
+                fileBoard = Board(file=file)
+                result.append(fileBoard)
     
     return result

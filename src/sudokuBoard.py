@@ -96,6 +96,7 @@ class Board():
                     if entry not in lexiconDomain:
                         print("You used a value outside of the lexicon: "+entry)
                         theUserIsVeryStupid = True
+                        break
                 if theUserIsVeryStupid:
                     continue
 
