@@ -19,23 +19,10 @@ def testBoard(withUser=False):
     print(answer1.validate())
     
     # Testing validity
-    rowValid:Board
-    with open('src/sudoku_boards/bad_boards/rowValidFail.sud','r') as file:
-        rowValid = Board(file=file)
-    print('\n'+str(rowValid))
-    print(rowValid.validate())
-
-    colValid:Board
-    with open('src/sudoku_boards/bad_boards/colValidFail.sud','r') as file:
-        colValid = Board(file=file)
-    print('\n'+str(colValid))
-    print(colValid.validate())
-
-    squareValid:Board
-    with open('src/sudoku_boards/bad_boards/squareValidFail.sud','r') as file:
-        squareValid = Board(file=file)
-    print('\n'+str(squareValid))
-    print(squareValid.validate())
+    badValidBoards:list[Board] = getBoardsFromFolder('src/sudoku_boards/bad_boards')
+    for board in badValidBoards:
+        print('\n'+str(board))
+        print(board.validate())
 
     # Testing user input
     if withUser:
