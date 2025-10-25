@@ -50,3 +50,7 @@ def getBoardsFromFolder(path:str = 'src/sudoku_boards'):
                 result.append(fileBoard)
     
     return result
+
+
+def testSearchAlgorithms():
+    pass
