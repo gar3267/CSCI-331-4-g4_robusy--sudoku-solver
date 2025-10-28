@@ -147,13 +147,6 @@ class Board():
         return None
     
 
-    def __str__(self):
-        result:str = 'Lexicon:\n'+str(self.lexicon)+'\n\nBoard:'
-        for row in self.board:
-            result += '\n'+str(row)
-        return result
-    
-
     def validPlacement(self, row:int, col:int, value:str):
         """Checks if placing `value` at (row, col) would be valid. Board isn't modified."""
         # Store the original value and place the new one temporarily
@@ -186,14 +179,17 @@ class Board():
         self.board[row][col] = original
         return True
 
+
     def isCellEmpty(self, row:int, col:int):
         """Returns if the cell at (row,col) is empty (a space)"""
         return self.board[row][col] == ' '
     
+
     def fillCell(self, row:int, col:int, value:str):
         """Fills the cell at (row,col) with value"""
         self.board[row][col] = value
     
+
     def equals(self, other:'Board'):
         """Checks if two boards are equal"""
         if self.lexicon != other.lexicon:
@@ -203,3 +199,10 @@ class Board():
                 if self.board[i][j] != other.board[i][j]:
                     return False
         return True
+    
+
+    def __str__(self):
+        result:str = 'Lexicon:\n'+str(self.lexicon)+'\n\nBoard:'
+        for row in self.board:
+            result += '\n'+str(row)
+        return result
