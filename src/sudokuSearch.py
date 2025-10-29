@@ -1,10 +1,11 @@
+from typing import Callable
 from src.sudokuBoard import Board
 import time
 
 BACKTRACK_COUNTER = 0
 
 # A recursive function to solve the Sudoku problem
-def solveSudokuBacktracking(sudokuBoard:Board, row, col):
+def solveSudoku(sudokuBoard:Board, row:int, col:int, nodeExpandFunc: Callable[[Board],list[str]]):
     global BACKTRACK_COUNTER
 
     # base case: Reached nth column of the last row
@@ -18,14 +19,15 @@ def solveSudokuBacktracking(sudokuBoard:Board, row, col):
 
     # If cell is already occupied, then move forward
     if not sudokuBoard.isCellEmpty(row, col) :
-        return solveSudokuBacktracking(sudokuBoard, row, col + 1)
+        return solveSudoku(sudokuBoard, row, col + 1, nodeExpandFunc)
 
-    for num in sudokuBoard.lexicon:
+    choiceDomain = nodeExpandFunc(sudokuBoard)
+    for num in choiceDomain:
         # If num can be placed at current position without violating Sudoku rules
         if sudokuBoard.validPlacement(row, col, str(num)) :
             sudokuBoard.fillCell(row, col, str(num))
 
-            if solveSudokuBacktracking(sudokuBoard, row, col + 1):
+            if solveSudoku(sudokuBoard, row, col + 1, nodeExpandFunc):
                 return True
             
             # Backtrack
@@ -35,11 +37,15 @@ def solveSudokuBacktracking(sudokuBoard:Board, row, col):
     return False
 
 
+def backtrackNodeExpansion(board:Board):
+    return board.lexicon
+
+
 def backtrackSudoku(board:Board):
     global BACKTRACK_COUNTER
     BACKTRACK_COUNTER = 0
 
-    solveSudokuBacktracking(board, 0, 0)
+    solveSudoku(board, 0, 0, backtrackNodeExpansion)
 
     return BACKTRACK_COUNTER
 
@@ -49,7 +55,7 @@ def backtrackSudokuTime(board:Board):
     BACKTRACK_COUNTER = 0
     start_time = time.perf_counter()
 
-    result = solveSudokuBacktracking(board, 0, 0)
+    result = solveSudoku(board, 0, 0, backtrackNodeExpansion)
 
     end_time = time.perf_counter()
 
