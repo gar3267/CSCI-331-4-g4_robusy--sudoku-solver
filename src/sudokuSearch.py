@@ -1,4 +1,4 @@
-from sudokuBoard import Board
+from src.sudokuBoard import Board
 import time
 
 BACKTRACK_COUNTER = 0
@@ -34,7 +34,8 @@ def solveSudokuBacktracking(sudokuBoard:Board, row, col):
 
     return False
 
-def solveSudoku(board:Board):
+
+def backtrackSudoku(board:Board):
     global BACKTRACK_COUNTER
     BACKTRACK_COUNTER = 0
 
@@ -42,7 +43,8 @@ def solveSudoku(board:Board):
 
     return BACKTRACK_COUNTER
 
-def solveSudokuWithSeconds(board:Board):
+
+def backtrackSudokuTime(board:Board):
     global BACKTRACK_COUNTER
     BACKTRACK_COUNTER = 0
     start_time = time.perf_counter()
@@ -53,6 +55,7 @@ def solveSudokuWithSeconds(board:Board):
 
     return BACKTRACK_COUNTER, end_time - start_time
 
+
 if __name__ == "__main__":
     
     board1:Board
@@ -62,7 +65,7 @@ if __name__ == "__main__":
 
     print('\nSolving...\n')
 
-    count, seconds = solveSudokuWithSeconds(board1)
+    count, seconds = backtrackSudokuTime(board1)
     print('\nSolved in ' + str(seconds) + ' seconds with ' + str(count) + ' backtracking steps\n')
     print(board1)
 

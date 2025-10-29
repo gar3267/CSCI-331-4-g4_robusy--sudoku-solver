@@ -1,4 +1,5 @@
-from .sudokuBoard import Board
+import src.sudokuSearch as sudokuSearch
+from src.sudokuBoard import Board
 import os
 
 def testBoard(withUser=False):
@@ -28,10 +29,10 @@ def testBoard(withUser=False):
         print("==============================\nVALIDITY SHOULDN'T HAVE FAILED\n==============================")
     
     # Testing validity
-    badValidBoards:list[Board] = getBoardsFromFolder('src/sudoku_boards/bad_boards')
+    badValidBoards:list[tuple[Board,str]] = getBoardsFromFolder('src/sudoku_boards/bad_boards')
     for board in badValidBoards:
-        print('\n'+str(board))
-        validity = board.validate()
+        print('\n'+str(board[1])+'\n'+str(board[0]))
+        validity = board[0].validate()
         print(validity)
         if validity is None:
             print('============================\nVALIDITY SHOULD HAVE FAILED\n============================')
@@ -51,7 +52,7 @@ def getUserBoard():
 def getBoardsFromFolder(path:str = 'src/sudoku_boards'):
     """Gets all the boards pathin sudoku_boards folder then returns them as list"""
     dir_list = os.listdir(path)
-    result:list[Board] = []
+    result:list[tuple[Board,str]] = []
 
     # If it blows up, that tells you that you did the file wrong
     for filename in dir_list:
@@ -59,10 +60,14 @@ def getBoardsFromFolder(path:str = 'src/sudoku_boards'):
         if filename[-4:] == '.sud':
             with open(path+'/'+filename,'r') as file:
                 fileBoard = Board(file=file)
-                result.append(fileBoard)
+                result.append((fileBoard,filename))
     
     return result
 
 
 def testSearchAlgorithms():
-    pass
+    testBoards = getBoardsFromFolder()
+
+    for board in testBoards:
+        count, seconds = sudokuSearch.backtrackSudokuTime(board[0])
+        print('\nSolved '+str(board[1])+' in ' + str(seconds) + ' seconds with ' + str(count) + ' backtracking steps\n')
