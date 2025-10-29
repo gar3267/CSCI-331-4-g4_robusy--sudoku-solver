@@ -18,7 +18,7 @@ def main():
                 sudokuRunner.testSearchAlgorithms()
                 continue
             case _:
-                print("Input not within given list, try again.")
+                print("\nInput not within given list, try again.\n")
                 continue
     
 

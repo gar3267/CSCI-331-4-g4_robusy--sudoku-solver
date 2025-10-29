@@ -42,6 +42,9 @@ def testBoard(withUser=False):
         userBoard:Board = Board()
         print(userBoard)
         print(userBoard.validate())
+    
+    # Adding extra enter
+    print()
 
 
 def getUserBoard():
