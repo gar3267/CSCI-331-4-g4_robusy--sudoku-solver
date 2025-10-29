@@ -5,12 +5,12 @@ import time
 BACKTRACK_COUNTER = 0
 
 # A recursive function to solve the Sudoku problem
-def solveSudoku(sudokuBoard:Board, row:int, col:int, nodeExpandFunc: Callable[[Board],list[str]]):
+def solveSudoku(sudokuBoard:Board, row:int, col:int, nodeExpandFunc:Callable[[Board],list[str]], nodeExpArgs:list = None):
     global BACKTRACK_COUNTER
 
     # base case: Reached nth column of the last row
     if row == (sudokuBoard.lexiconLength -1) and col == sudokuBoard.lexiconLength:
-        return True
+        return sudokuBoard.validate()==None # Returning board validity
 
     # If past the last column of the row, then go to the next row
     if col == sudokuBoard.lexiconLength:
@@ -21,13 +21,15 @@ def solveSudoku(sudokuBoard:Board, row:int, col:int, nodeExpandFunc: Callable[[B
     if not sudokuBoard.isCellEmpty(row, col) :
         return solveSudoku(sudokuBoard, row, col + 1, nodeExpandFunc)
 
-    choiceDomain = nodeExpandFunc(sudokuBoard)
+    result = nodeExpandFunc(sudokuBoard, row, col, nodeExpArgs)
+    choiceDomain = result[0]
+    nodeExpArgs = result[1]
     for num in choiceDomain:
         # Filling cell with first num in domain
         sudokuBoard.fillCell(row, col, str(num))
 
         if solveSudoku(sudokuBoard, row, col + 1, nodeExpandFunc):
-            return True
+            return sudokuBoard.validate()==None # Returning board validity
             
         # Backtrack
         sudokuBoard.fillCell(row, col, ' ')
@@ -36,8 +38,19 @@ def solveSudoku(sudokuBoard:Board, row:int, col:int, nodeExpandFunc: Callable[[B
     return False
 
 
-def backtrackNodeExpansion(board:Board):
-    return board.lexicon
+def backtrackNodeExpansion(board:Board, row=None, col=None, nodeExpArgs=None):
+    return (board.lexicon,None)
+
+
+def basicPrunedNodeExpansion(board:Board, row:int, col:int, nodeExpArgs=None):
+    choices = board.lexicon
+    result = []
+
+    for choice in choices:
+        if board.validPlacement(row,col,choice):
+            result.append(choice)
+        
+    return (result,None)
 
 
 def backtrackSudoku(board:Board):
@@ -55,6 +68,27 @@ def backtrackSudokuTime(board:Board):
     start_time = time.perf_counter()
 
     result = solveSudoku(board, 0, 0, backtrackNodeExpansion)
+
+    end_time = time.perf_counter()
+
+    return BACKTRACK_COUNTER, end_time - start_time
+
+
+def backtrackPrunedSudoku(board:Board):
+    global BACKTRACK_COUNTER
+    BACKTRACK_COUNTER = 0
+
+    solveSudoku(board, 0, 0, basicPrunedNodeExpansion)
+
+    return BACKTRACK_COUNTER
+
+
+def backtrackPrunedSudokuTime(board:Board):
+    global BACKTRACK_COUNTER
+    BACKTRACK_COUNTER = 0
+    start_time = time.perf_counter()
+
+    result = solveSudoku(board, 0, 0, basicPrunedNodeExpansion)
 
     end_time = time.perf_counter()
 
