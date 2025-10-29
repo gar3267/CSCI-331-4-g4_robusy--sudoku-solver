@@ -23,16 +23,15 @@ def solveSudoku(sudokuBoard:Board, row:int, col:int, nodeExpandFunc: Callable[[B
 
     choiceDomain = nodeExpandFunc(sudokuBoard)
     for num in choiceDomain:
-        # If num can be placed at current position without violating Sudoku rules
-        if sudokuBoard.validPlacement(row, col, str(num)) :
-            sudokuBoard.fillCell(row, col, str(num))
+        # Filling cell with first num in domain
+        sudokuBoard.fillCell(row, col, str(num))
 
-            if solveSudoku(sudokuBoard, row, col + 1, nodeExpandFunc):
-                return True
+        if solveSudoku(sudokuBoard, row, col + 1, nodeExpandFunc):
+            return True
             
-            # Backtrack
-            sudokuBoard.fillCell(row, col, ' ')
-            BACKTRACK_COUNTER += 1
+        # Backtrack
+        sudokuBoard.fillCell(row, col, ' ')
+        BACKTRACK_COUNTER += 1
 
     return False
 
