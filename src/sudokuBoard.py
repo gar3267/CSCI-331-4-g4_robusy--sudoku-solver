@@ -147,6 +147,60 @@ class Board():
         return None
     
 
+    def validPlacement(self, row:int, col:int, value:str):
+        """Checks if placing `value` at (row, col) would be valid. Board isn't modified."""
+        # Store the original value and place the new one temporarily
+        original = self.board[row][col]
+        self.board[row][col] = value
+
+        # Check for row duplicates
+        for j in range(self.lexiconLength):
+            if j != col and self.board[row][j] == value:
+                self.board[row][col] = original
+                return False
+
+        # Check for column duplicates
+        for i in range(self.lexiconLength):
+            if i != row and self.board[i][col] == value:
+                self.board[row][col] = original
+                return False
+
+        # Check the sub-square for duplicates
+        squareDim = int(math.sqrt(self.lexiconLength))
+        startRow = (row // squareDim) * squareDim
+        startCol = (col // squareDim) * squareDim
+        for i in range(startRow, startRow + squareDim):
+            for j in range(startCol, startCol + squareDim):
+                if (i != row or j != col) and self.board[i][j] == value:
+                    self.board[row][col] = original
+                    return False
+
+        # Restore original value and return valid
+        self.board[row][col] = original
+        return True
+
+
+    def isCellEmpty(self, row:int, col:int):
+        """Returns if the cell at (row,col) is empty (a space)"""
+        return self.board[row][col] == ' '
+    
+
+    def fillCell(self, row:int, col:int, value:str):
+        """Fills the cell at (row,col) with value"""
+        self.board[row][col] = value
+    
+
+    def equals(self, other:'Board'):
+        """Checks if two boards are equal"""
+        if self.lexicon != other.lexicon:
+            return False
+        for i in range(self.lexiconLength):
+            for j in range(self.lexiconLength):
+                if self.board[i][j] != other.board[i][j]:
+                    return False
+        return True
+    
+
     def __str__(self):
         result:str = 'Lexicon:\n'+str(self.lexicon)+'\n\nBoard:'
         for row in self.board:
