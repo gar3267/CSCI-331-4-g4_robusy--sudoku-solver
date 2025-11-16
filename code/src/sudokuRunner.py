@@ -69,13 +69,13 @@ def getBoardsFromFolder(path:str = 'code/src/sudoku_boards'):
 
 
 def testSearchAlgorithms():
-    # # Testing with forward checking
-    # print('Testing with forward checking algorithm.')
-    # testBoards = getBoardsFromFolder()
-    # for board in testBoards:
-    #     print('\nTesting ' + str(board[1]))
-    #     count, seconds = sudokuSearch.forwardCheckingSudokuTime(board[0])
-    #     print('\nSolved in ' + str(seconds) + ' seconds with ' + str(count) + ' backtracking steps\n')
+    # Testing with forward checking
+    print('Testing with forward checking algorithm.')
+    testBoards = getBoardsFromFolder()
+    for board in testBoards:
+        print('\nTesting ' + str(board[1]))
+        count, seconds = sudokuSearch.forwardCheckingSudokuTime(board[0])
+        print('\nSolved in ' + str(seconds) + ' seconds with ' + str(count) + ' backtracking steps\n')
 
     # Testing with pruned
     print('Testing with pruned node expansions.')
