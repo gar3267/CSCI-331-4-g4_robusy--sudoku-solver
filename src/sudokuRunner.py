@@ -84,3 +84,20 @@ def testSearchAlgorithms():
         print('\nTesting '+str(board[1]))
         count, seconds = sudokuSearch.backtrackSudokuTime(board[0])
         print('\nSolved in ' + str(seconds) + ' seconds with ' + str(count) + ' backtracking steps\n')
+
+def testPruningAlgorithms():
+    # Testing with pruned
+
+    board1:Board
+    with open('src/sudoku_boards/board_16x16.sud','r') as file:
+        board1 = Board(file=file)
+
+    print('\nSolving...\n')
+
+    count, seconds = sudokuSearch.backtrackPrunedSudokuTime(board1)
+    print('\nSolved in ' + str(seconds) + ' seconds with ' + str(count) + ' backtracking steps\n')
+
+    answer1:Board
+    with open('src/sudoku_boards/answers/answer1.sud','r') as file:
+        answer1 = Board(file=file)
+    print('\n'+str(board1.equals(answer1)))
