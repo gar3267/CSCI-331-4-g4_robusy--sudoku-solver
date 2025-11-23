@@ -52,7 +52,7 @@ def getUserBoard():
     return Board()
 
 
-def getBoardsFromFolder(path:str = 'src/sudoku_boards'):
+def getBoardsFromFolder(path:str = 'code/src/sudoku_boards'):
     """Gets all the boards pathin sudoku_boards folder then returns them as list"""
     dir_list = os.listdir(path)
     result:list[tuple[Board,str]] = []
@@ -69,6 +69,14 @@ def getBoardsFromFolder(path:str = 'src/sudoku_boards'):
 
 
 def testSearchAlgorithms():
+    # Testing with forward checking
+    print('Testing with forward checking algorithm.')
+    testBoards = getBoardsFromFolder()
+    for board in testBoards:
+        print('\nTesting ' + str(board[1]))
+        count, seconds = sudokuSearch.forwardCheckingSudokuTime(board[0])
+        print('\nSolved in ' + str(seconds) + ' seconds with ' + str(count) + ' backtracking steps\n')
+
     # Testing with pruned
     print('Testing with pruned node expansions.')
     testBoards = getBoardsFromFolder()
@@ -84,3 +92,4 @@ def testSearchAlgorithms():
         print('\nTesting '+str(board[1]))
         count, seconds = sudokuSearch.backtrackSudokuTime(board[0])
         print('\nSolved in ' + str(seconds) + ' seconds with ' + str(count) + ' backtracking steps\n')
+
